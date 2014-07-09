@@ -2,15 +2,15 @@
 <html>
 <head>
 	<title>iMagine</title>
-	<script>
-		//	Redirect to splash if not logged in
-		var tempaddress = 'http://10.1.98.138/seesawclone';		//	Note search for tempaddress
-		if (localStorage.username == null) {
-			window.location = tempaddress+"/splash.html";
-		}
-	</script>
 	<script src="libs/jquery.js"></script>
 	<script src="libs/jquery_ui_min.js"></script>
+	<script src="serversetup.js"></script>
+	<script>
+		//	Redirect to splash if not logged in
+		if (localStorage.username == null) {
+			window.location = rootaddress+"/splash.html";
+		}
+	</script>
 	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
@@ -102,10 +102,6 @@
 	<!--<button type="button" onclick="load()">Load</button>-->
 
 	<script>
-		var ipaddress = '10.1.98.138';
-		var port = '1110';
-		var serveraddress = 'http://'+ipaddress+':'+port;
-
 		var load = function () {
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.onreadystatechange = function () {

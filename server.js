@@ -1,17 +1,25 @@
+//	serversetup.js
+//	make sure this reflects values in serversetup.js
+var ipaddress = "localhost";
+var port = "1110";
+var rootaddress = 'http://'+ipaddress+'/imajindemo';
+var serveraddress = 'http://'+ipaddress+':'+port;
+
+var serverhost = "localhost";
+var serveruser = "root";
+var serverpassword = "mountain";
+var serverdatabase = "imagine";
+
 var http = require('http');
 var url = require('url');
 var mysql = require('mysql');
 var qs = require('querystring');
 
-var ipaddress = 'localhost';
-var port = '8001';
-var serveraddress = 'http://'+ipaddress+':'+port;
-
 var connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "mountain",
-    database: "imagine"
+    host: serverhost,
+    user: serveruser,
+    password: serverpassword,
+    database: serverdatabase
 });
 
 http.createServer(function (request, response) {
