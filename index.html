@@ -84,6 +84,14 @@
 		<div style="width:100%; height:1px; margin-left:1px; margin-top:-1px; background-color:#B4975A;"></div>
 		<div style="font-size:18px; margin-top:10px; margin-bottom:60px;">Description: <textarea id="description_input" rows="4" cols="256" maxlength="1000" style="width:256px; position:absolute; right:120px; font-size:11px;"></textarea></div>
 		<div style="width:100%; height:1px; margin-left:1px; margin-top:-1px; background-color:#B4975A;"></div>
+		<div style="font-size:18px; margin-top:10px; margin-bottom:10px;">Sector:
+			<select id="sector_input">
+				<option value="gss">GSS</option>
+				<option value="hc">HC</option>
+				<option value="intel">INTEL</option>
+				<option value="jh">J&H</option>
+			</select>
+		<div style="width:100%; height:1px; margin-left:1px; margin-top:-1px; background-color:#B4975A;"></div>
 		<div style="font-size:18px; margin-top:10px; margin-bottom:10px;">Tags: <textarea id="tags_input" rows="1" cols="256" maxlength="20" style="width:256px; position:absolute; right:120px; font-size:11px;"></textarea></div>
 		<div style="width:100%; height:1px; margin-left:1px; margin-top:-1px; background-color:#B4975A;"></div>
 		<div style="font-size:18px; margin-top:10px; margin-bottom:10px;">Picture: <textarea id="image_input"  rows="1" cols="256" maxlength="20" style="width:256px; position:absolute; right:120px; font-size:11px; color:red;">To Be Implemented.</textarea></div>
@@ -170,6 +178,8 @@
 			tempPost += document.getElementById("summary_input").value;
 			tempPost += "&description=";
 			tempPost += document.getElementById("description_input").value;
+			tempPost += "&sector=";
+			tempPost += document.getElementById("sector_input").value;
 			xmlhttp.send(tempPost);
 			
 			//	Reload feed
@@ -232,7 +242,7 @@
 		load(localStorage.feed);
 		
 		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
-		//	Go to homepage on loogo click
+		//	Go to homepage on logo click
 		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
 		$("#logo").click(function () {
 			window.location = rootaddress+"/index.html";

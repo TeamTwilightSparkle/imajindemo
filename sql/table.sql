@@ -12,6 +12,7 @@ create table if not exists content (
     summary       varchar(160) not null,
     description   varchar(512) not null,
     username      varchar(64) not null,
+    sector        varchar(64) not null,
     image         varchar(255),
     charges       int default 0 check (charges >= 0),
     last_modified date         not null,

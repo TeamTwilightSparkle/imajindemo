@@ -6,13 +6,13 @@ insert into profile (username, last_seen, date_joined) values ('abdullah', '12-1
 
 -- contents
 insert into content (title, summary, description, username, last_modified, date_created)
-    values ('title a', 'this is a summary', 'this is a description', 'ty', '12-12-12', '12-12-12');
+    values ('title a', 'this is a summary', 'this is a description', 'ty', 'hc', '12-12-12', '12-12-12');
 insert into content (title, summary, description, username, last_modified, date_created)
-    values ('title b', 'this is a summary 2', 'this is a description 2', 'soul', '12-12-12', '12-12-12');
+    values ('title b', 'this is a summary 2', 'this is a description 2', 'soul', 'intel', '12-12-12', '12-12-12');
 insert into content (title, summary, description, username, last_modified, date_created)
-    values ('title c', 'this is a summary 3', 'this is a description 3', 'abdullah', '12-12-12', '12-12-12');
+    values ('title c', 'this is a summary 3', 'this is a description 3', 'abdullah', 'gss', '12-12-12', '12-12-12');
 insert into content (title, summary, description, username, last_modified, date_created)
-    values ('title d', 'this is a summary 4', 'this is a description 4', 'ankit', '12-12-12', '12-12-12');
+    values ('title d', 'this is a summary 4', 'this is a description 4', 'ankit', 'jh', '12-12-12', '12-12-12');
 
 -- content author
 

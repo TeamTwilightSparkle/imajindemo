@@ -1,6 +1,7 @@
 //	serversetup.js
 //	make sure this reflects values in serversetup.js
-var ipaddress = "192.168.1.9";
+//var ipaddress = "192.168.1.9";
+var ipaddress = "10.1.98.116";
 var port = "1110";
 var rootaddress = 'http://'+ipaddress+'/imajindemo';
 var serveraddress = 'http://'+ipaddress+':'+port;
@@ -38,7 +39,7 @@ http.createServer(function (request, response) {
         });
         request.on('end', function () {
             var post = qs.parse(body);
-			var theQuery = "INSERT INTO content (title, summary, description, username, last_modified, date_created) VALUES ('"+post['title']+"', '"+post['summary']+"', '"+post['description']+"', '"+post['username']+"', '12-12-12', '12-12-12')";
+			var theQuery = "INSERT INTO content (title, summary, description, username, sector, last_modified, date_created) VALUES ('"+post['title']+"', '"+post['summary']+"', '"+post['description']+"', '"+post['username']+"', '"+post['sector']+"', '12-12-12', '12-12-12')";
 			connection.query(theQuery, function (error, rows, fields) {
 				if (error) {
 					console.log(error);
@@ -55,6 +56,60 @@ http.createServer(function (request, response) {
     }
 	else if (parameter[1] == "newfeed" && parameter.length == 2 && request.method == 'POST') {
 		connection.query('SELECT * FROM content ORDER BY id DESC', function (error, rows, fields) {
+			response.writeHead(200, {
+				'Access-Control-Allow-Origin': '*',
+				'Content-Type': 'text/plain'
+			});
+			response.write(JSON.stringify(rows));
+			response.end();
+		});	
+	}
+	else if (parameter[1] == "topfeed" && parameter.length == 2 && request.method == 'POST') {
+		connection.query('SELECT * FROM content ORDER BY charges DESC', function (error, rows, fields) {
+			response.writeHead(200, {
+				'Access-Control-Allow-Origin': '*',
+				'Content-Type': 'text/plain'
+			});
+			response.write(JSON.stringify(rows));
+			response.end();
+		});	
+	}
+	else if (parameter[1] == "gssfeed" && parameter.length == 2 && request.method == 'POST') {
+		var theQuery = "SELECT * FROM content WHERE sector='gss' ORDER BY charges DESC";
+		connection.query(theQuery, function (error, rows, fields) {
+			response.writeHead(200, {
+				'Access-Control-Allow-Origin': '*',
+				'Content-Type': 'text/plain'
+			});
+			response.write(JSON.stringify(rows));
+			response.end();
+		});	
+	}
+	else if (parameter[1] == "hcfeed" && parameter.length == 2 && request.method == 'POST') {
+		var theQuery = "SELECT * FROM content WHERE sector='hc' ORDER BY charges DESC";
+		connection.query(theQuery, function (error, rows, fields) {
+			response.writeHead(200, {
+				'Access-Control-Allow-Origin': '*',
+				'Content-Type': 'text/plain'
+			});
+			response.write(JSON.stringify(rows));
+			response.end();
+		});	
+	}
+	else if (parameter[1] == "intelfeed" && parameter.length == 2 && request.method == 'POST') {
+		var theQuery = "SELECT * FROM content WHERE sector='intel' ORDER BY charges DESC";
+		connection.query(theQuery, function (error, rows, fields) {
+			response.writeHead(200, {
+				'Access-Control-Allow-Origin': '*',
+				'Content-Type': 'text/plain'
+			});
+			response.write(JSON.stringify(rows));
+			response.end();
+		});	
+	}
+	else if (parameter[1] == "jhfeed" && parameter.length == 2 && request.method == 'POST') {
+		var theQuery = "SELECT * FROM content WHERE sector='jh' ORDER BY charges DESC";
+		connection.query(theQuery, function (error, rows, fields) {
 			response.writeHead(200, {
 				'Access-Control-Allow-Origin': '*',
 				'Content-Type': 'text/plain'
