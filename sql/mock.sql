@@ -1,74 +1,74 @@
--- Profiles
-INSERT INTO PROFILE (username, last_seen, date_joined) VALUES ('Soul', '12-12-12', '12-12-12');
-INSERT INTO PROFILE (username, last_seen, date_joined) VALUES ('Ty', '12-12-13', '12-12-13');
-INSERT INTO PROFILE (username, last_seen, date_joined) VALUES ('Ankit', '12-12-13', '12-12-13');
-INSERT INTO PROFILE (username, last_seen, date_joined) VALUES ('Abdullah', '12-12-14', '12-12-14');
+-- profiles
+insert into profile (username, last_seen, date_joined) values ('soul', '12-12-12', '12-12-12');
+insert into profile (username, last_seen, date_joined) values ('ty', '12-12-13', '12-12-13');
+insert into profile (username, last_seen, date_joined) values ('ankit', '12-12-13', '12-12-13');
+insert into profile (username, last_seen, date_joined) values ('abdullah', '12-12-14', '12-12-14');
 
--- Contents
-INSERT INTO CONTENT (title, summary, description, username, last_modified, date_created)
-    VALUES ('Title A', 'This is a summary', 'This is a description', 'Ty', '12-12-12', '12-12-12');
-INSERT INTO CONTENT (title, summary, description, username, last_modified, date_created)
-    VALUES ('Title B', 'This is a summary 2', 'This is a description 2', 'Soul', '12-12-12', '12-12-12');
-INSERT INTO CONTENT (title, summary, description, username, last_modified, date_created)
-    VALUES ('Title C', 'This is a summary 3', 'This is a description 3', 'Abdullah', '12-12-12', '12-12-12');
-INSERT INTO CONTENT (title, summary, description, username, last_modified, date_created)
-    VALUES ('Title D', 'This is a summary 4', 'This is a description 4', 'Ankit', '12-12-12', '12-12-12');
+-- contents
+insert into content (title, summary, description, username, last_modified, date_created)
+    values ('title a', 'this is a summary', 'this is a description', 'ty', '12-12-12', '12-12-12');
+insert into content (title, summary, description, username, last_modified, date_created)
+    values ('title b', 'this is a summary 2', 'this is a description 2', 'soul', '12-12-12', '12-12-12');
+insert into content (title, summary, description, username, last_modified, date_created)
+    values ('title c', 'this is a summary 3', 'this is a description 3', 'abdullah', '12-12-12', '12-12-12');
+insert into content (title, summary, description, username, last_modified, date_created)
+    values ('title d', 'this is a summary 4', 'this is a description 4', 'ankit', '12-12-12', '12-12-12');
 
--- Content Author
+-- content author
 
-INSERT INTO CONTENT_PROFILES (id, username) VALUES (1, 'Soul');
-INSERT INTO CONTENT_PROFILES (id, username) VALUES (1, 'Ty');
-INSERT INTO CONTENT_PROFILES (id, username) VALUES (2, 'Ty');
-INSERT INTO CONTENT_PROFILES (id, username) VALUES (3, 'Soul');
-INSERT INTO CONTENT_PROFILES (id, username) VALUES (3, 'Ty');
-INSERT INTO CONTENT_PROFILES (id, username) VALUES (3, 'Ankit');
-INSERT INTO CONTENT_PROFILES (id, username) VALUES (3, 'Abdullah');
-INSERT INTO CONTENT_PROFILES (id, username) VALUES (4, 'Ankit');
-INSERT INTO CONTENT_PROFILES (id, username) VALUES (4, 'Abdullah');
+insert into content_profiles (id, username) values (1, 'soul');
+insert into content_profiles (id, username) values (1, 'ty');
+insert into content_profiles (id, username) values (2, 'ty');
+insert into content_profiles (id, username) values (3, 'soul');
+insert into content_profiles (id, username) values (3, 'ty');
+insert into content_profiles (id, username) values (3, 'ankit');
+insert into content_profiles (id, username) values (3, 'abdullah');
+insert into content_profiles (id, username) values (4, 'ankit');
+insert into content_profiles (id, username) values (4, 'abdullah');
 
--- Tags
-INSERT INTO TAG (tag) VALUES ('YOLO');
-INSERT INTO TAG (tag) VALUES ('SWAG');
-INSERT INTO TAG (tag) VALUES ('AgilexInterns');
-INSERT INTO TAG (tag) VALUES ('Sushi');
+-- tags
+insert into tag (tag) values ('yolo');
+insert into tag (tag) values ('swag');
+insert into tag (tag) values ('agilexinterns');
+insert into tag (tag) values ('sushi');
 
--- Content Tags
-INSERT INTO CONTENT_TAG (id, tag) VALUES (1, 'YOLO');
-INSERT INTO CONTENT_TAG (id, tag) VALUES (1, 'SWAG');
-INSERT INTO CONTENT_TAG (id, tag) VALUES (1, 'AgilexInterns');
-INSERT INTO CONTENT_TAG (id, tag) VALUES (1, 'Sushi');
-INSERT INTO CONTENT_TAG (id, tag) VALUES (2, 'YOLO');
-INSERT INTO CONTENT_TAG (id, tag) VALUES (3, 'YOLO');
-INSERT INTO CONTENT_TAG (id, tag) VALUES (2, 'AgilexInterns');
-INSERT INTO CONTENT_TAG (id, tag) VALUES (3, 'AgilexInterns');
+-- content tags
+insert into content_tag (id, tag) values (1, 'yolo');
+insert into content_tag (id, tag) values (1, 'swag');
+insert into content_tag (id, tag) values (1, 'agilexinterns');
+insert into content_tag (id, tag) values (1, 'sushi');
+insert into content_tag (id, tag) values (2, 'yolo');
+insert into content_tag (id, tag) values (3, 'yolo');
+insert into content_tag (id, tag) values (2, 'agilexinterns');
+insert into content_tag (id, tag) values (3, 'agilexinterns');
 
--- Comments
-INSERT INTO COMMENT (username, id, post_number, comment, last_modified, date_created)
-    VALUES ('Soul', 1, 1, 'This is a comment', '12-12-12', '12-12-12');
-INSERT INTO COMMENT (username, id, post_number, comment, last_modified, date_created)
-    VALUES ('Soul', 2, 1, 'This is a comment 2', '12-12-12', '12-12-12');
-INSERT INTO COMMENT (username, id, post_number, comment, last_modified, date_created)
-    VALUES ('Soul', 1, 2, 'This is a comment 3', '12-12-12', '12-12-12');
+-- comments
+insert into comment (username, id, post_number, comment, last_modified, date_created)
+    values ('soul', 1, 1, 'this is a comment', '12-12-12', '12-12-12');
+insert into comment (username, id, post_number, comment, last_modified, date_created)
+    values ('soul', 2, 1, 'this is a comment 2', '12-12-12', '12-12-12');
+insert into comment (username, id, post_number, comment, last_modified, date_created)
+    values ('soul', 1, 2, 'this is a comment 3', '12-12-12', '12-12-12');
 
--- Charges
-INSERT INTO CHARGE (charged) VALUES (TRUE);
-INSERT INTO CHARGE (charged) VALUES (TRUE);
-INSERT INTO CHARGE (charged) VALUES (TRUE);
-INSERT INTO CHARGE (charged) VALUES (TRUE);
-INSERT INTO CHARGE (charged) VALUES (TRUE);
-INSERT INTO CHARGE (charged) VALUES (TRUE);
+-- charges
+insert into charge (charged) values (true);
+insert into charge (charged) values (true);
+insert into charge (charged) values (true);
+insert into charge (charged) values (true);
+insert into charge (charged) values (true);
+insert into charge (charged) values (true);
 
--- Profile charges on Content
-INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (1, 'Soul', 1);
-INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (1, 'Ty', 2);
-INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (1, 'Ankit', 3);
-INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (2, 'Soul', 4);
-INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (3, 'Abdullah', 5);
-INSERT INTO PROFILE_CHARGES (id, username, charge_id) VALUES (3, 'Ankit', 6);
+-- profile charges on content
+insert into profile_charges (id, username, charge_id) values (1, 'soul', 1);
+insert into profile_charges (id, username, charge_id) values (1, 'ty', 2);
+insert into profile_charges (id, username, charge_id) values (1, 'ankit', 3);
+insert into profile_charges (id, username, charge_id) values (2, 'soul', 4);
+insert into profile_charges (id, username, charge_id) values (3, 'abdullah', 5);
+insert into profile_charges (id, username, charge_id) values (3, 'ankit', 6);
 
-UPDATE CONTENT SET charges = charges + 1 WHERE id = 1;
-UPDATE CONTENT SET charges = charges + 1 WHERE id = 1;
-UPDATE CONTENT SET charges = charges + 1 WHERE id = 1;
-UPDATE CONTENT SET charges = charges + 1 WHERE id = 2;
-UPDATE CONTENT SET charges = charges + 1 WHERE id = 3;
-UPDATE CONTENT SET charges = charges + 1 WHERE id = 3;
+update content set charges = charges + 1 where id = 1;
+update content set charges = charges + 1 where id = 1;
+update content set charges = charges + 1 where id = 1;
+update content set charges = charges + 1 where id = 2;
+update content set charges = charges + 1 where id = 3;
+update content set charges = charges + 1 where id = 3;

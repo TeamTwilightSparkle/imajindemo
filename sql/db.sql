@@ -1,1 +1,1 @@
-CREATE DATABASE IMAGINE;
+create database imagine;

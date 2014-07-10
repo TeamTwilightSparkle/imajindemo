@@ -27,15 +27,15 @@
 		<div id="tabs">
 			<div id="newtab" class="tab">New</div>
 			<div id="goldline"></div>
-			<div id="newtab" class="tab">Top</div>
+			<div id="toptab" class="tab">Top</div>
 			<div id="goldline"></div>
-			<div id="newtab" class="tab">GSS</div>
+			<div id="gsstab" class="tab">GSS</div>
 			<div id="goldline"></div>
-			<div id="newtab" class="tab">HC</div>
+			<div id="hctab" class="tab">HC</div>
 			<div id="goldline"></div>
-			<div id="newtab" class="tab">Intel</div>
+			<div id="inteltab" class="tab">Intel</div>
 			<div id="goldline"></div>
-			<div id="newtab" class="tab">J&H</div>
+			<div id="jhtab" class="tab">J&H</div>
 		</div>
 		<div id="feed">
 			<!--
@@ -103,7 +103,10 @@
 	<!--<button type="button" onclick="load()">Load</button>-->
 
 	<script>
-		var load = function () {
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		//	Load the given feed
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		var load = function (feed) {
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.onreadystatechange = function () {
 				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -119,8 +122,8 @@
 						tempstr += '		</div>';
 						tempstr += '		<div style="width:426px; float:left; margin-top:15px; margin-left:5px; margin-right:15px;">';
 						tempstr += '			<div style="float:left; font-size:11pt; font-weight:bold; color:#00A9A7;">'+json.results[i].username+'</div><div align="right" style="font-size:8pt; color:#7F8C8D;">5 minutes ago</div>';
-						tempstr += '			<div style="width:426px; height:20px; overflow:hidden; font-size:14pt; color:#B4975A; text-decoration:underline;">'+json.results[i].summary+'</div>';
-						tempstr += '			<div style="width:426px; height:40px; overflow:hidden;">'+json.results[i].description+'</div>';
+						tempstr += '			<div style="width:426px; height:20px; overflow:hidden; font-size:14pt; color:#B4975A; text-decoration:underline;">'+json.results[i].title+'</div>';
+						tempstr += '			<div style="width:426px; height:40px; overflow:hidden;">'+json.results[i].summary+'</div>';
 						tempstr += '			<img src="images/comments.png" style="float:left;"></img>';
 						tempstr += '			<div id="comments_count" style="color:red; float:left; padding-right:5px;">1</div>';
 						tempstr += '			<img src="images/flags.png" style="float:left;"></img>';
@@ -135,23 +138,13 @@
 					document.getElementById("feed").innerHTML = tempstr;
 				}
 			}
-			xmlhttp.open("POST", serveraddress+"/newfeed", true);
+			xmlhttp.open("POST", serveraddress+"/"+feed, true);
 			xmlhttp.send();
 		};
-		load();
 		
-		$("#logo").click(function () {
-			window.location = rootaddress+"/index.html";
-		});
-		$("#compose").click(function() {
-			document.getElementById("popup_bg").style.display="inline";
-			document.getElementById("ideaform").style.display="inline";
-		});
-		$("#popup_bg").click(function() {
-			document.getElementById("popup_bg").style.display="none";
-			document.getElementById("ideaform").style.display="none";
-		});
-		
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		//	Submit an idea
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
 		$("#ideaform_button").click(function() {
 			//	Send the form data to server.
 			//	Server will see if data can be inserted into database. If so, it will insert.
@@ -180,7 +173,7 @@
 			xmlhttp.send(tempPost);
 			
 			//	Reload feed
-			load();
+			load(localStorage.feed);
 			
 			//	Clear the form field
 			document.getElementById("username_input").value = "";
@@ -192,6 +185,161 @@
 			document.getElementById("popup_bg").style.display="none";
 			document.getElementById("ideaform").style.display="none";
 		});
+		
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		//	Charge an idea. Note: Does not account for duplicate charges
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		var charge = function (id_param) {
+			//	First get id of charged content
+			var id_temp = id_param.split("_");
+			var id_temp = id_temp[1];
+			
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function () {
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					var temp = xmlhttp.responseText;
+					//var json = JSON.parse(temp);	//maybe use this in the future to do more accurate error statements
+					//if (json["errno"] == "1062")
+							//document.getElementById("testcontent").innerHTML = "Username already taken";
+					document.getElementById("error_input").innerHTML += temp;
+				}
+			}
+			xmlhttp.open("POST", serveraddress+"/charge", true);
+			var tempPost = "id=";
+			tempPost += id_temp;
+			xmlhttp.send(tempPost);
+			
+			//	Reload feed
+			load(localStorage.feed);
+		};
+		
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		//	Click on an idea to see more details, comments, tags, etc. Brings user to a new page
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		var goToIdea = function (id_param) {
+			var id_temp = id_param.split("_");
+			var id_temp = id_temp[1];
+			
+			localStorage.id = id_temp;
+			window.location = rootaddress+"/idea.html";
+		};
+		
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		//	Set local storage feed to newfeed defaultly. Load feed on page load
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		if (localStorage.feed == null)
+			localStorage.feed = "newfeed";
+		load(localStorage.feed);
+		
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		//	Go to homepage on loogo click
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		$("#logo").click(function () {
+			window.location = rootaddress+"/index.html";
+		});
+		
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		//	Show idea form on compose button click
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		$("#compose").click(function() {
+			document.getElementById("popup_bg").style.display="inline";
+			document.getElementById("ideaform").style.display="inline";
+		});
+		
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		//	Hide idea form if clicked out
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		$("#popup_bg").click(function() {
+			document.getElementById("popup_bg").style.display="none";
+			document.getElementById("ideaform").style.display="none";
+		});
+		
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		//	Change feed to reflect selected tab
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		$("#newtab").click(function () {
+			localStorage.feed = "newfeed";
+			load(localStorage.feed);
+			$("#newtab").css("color", "#00FFFA");
+			$("#toptab").css("color", "#FFFFFF");
+			$("#gsstab").css("color", "#FFFFFF");
+			$("#hctab").css("color", "#FFFFFF");
+			$("#inteltab").css("color", "#FFFFFF");
+			$("#jhtab").css("color", "#FFFFFF");
+		});
+		$("#toptab").click(function () {
+			localStorage.feed = "topfeed";
+			load(localStorage.feed);
+			$("#newtab").css("color", "#FFFFFF");
+			$("#toptab").css("color", "#00FFFA");
+			$("#gsstab").css("color", "#FFFFFF");
+			$("#hctab").css("color", "#FFFFFF");
+			$("#inteltab").css("color", "#FFFFFF");
+			$("#jhtab").css("color", "#FFFFFF");
+		});
+		$("#gsstab").click(function () {
+			localStorage.feed = "gssfeed";
+			load(localStorage.feed);
+			$("#newtab").css("color", "#FFFFFF");
+			$("#toptab").css("color", "#FFFFFF");
+			$("#gsstab").css("color", "#00FFFA");
+			$("#hctab").css("color", "#FFFFFF");
+			$("#inteltab").css("color", "#FFFFFF");
+			$("#jhtab").css("color", "#FFFFFF");
+		});
+		$("#hctab").click(function () {
+			localStorage.feed = "hcfeed";
+			load(localStorage.feed);
+			$("#newtab").css("color", "#FFFFFF");
+			$("#toptab").css("color", "#FFFFFF");
+			$("#gsstab").css("color", "#FFFFFF");
+			$("#hctab").css("color", "#00FFFA");
+			$("#inteltab").css("color", "#FFFFFF");
+			$("#jhtab").css("color", "#FFFFFF");
+		});
+		$("#inteltab").click(function () {
+			localStorage.feed = "intelfeed";
+			load(localStorage.feed);
+			$("#newtab").css("color", "#FFFFFF");
+			$("#toptab").css("color", "#FFFFFF");
+			$("#gsstab").css("color", "#FFFFFF");
+			$("#hctab").css("color", "#FFFFFF");
+			$("#inteltab").css("color", "#00FFFA");
+			$("#jhtab").css("color", "#FFFFFF");
+		});
+		$("#jhtab").click(function () {
+			localStorage.feed = "jhfeed";
+			load(localStorage.feed);
+			$("#newtab").css("color", "#FFFFFF");
+			$("#toptab").css("color", "#FFFFFF");
+			$("#gsstab").css("color", "#FFFFFF");
+			$("#hctab").css("color", "#FFFFFF");
+			$("#inteltab").css("color", "#FFFFFF");
+			$("#jhtab").css("color", "#00FFFA");
+		});
+		
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		//	Show Tabs changing colors on mouse over and mouse out
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		$(".tab").mouseover(function () {
+			$(this).css("background", "#00A9A7");
+		});
+		$(".tab").mouseout(function () {
+			$(this).css("background", "#7F8C8D");
+		});
+		
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		//	Show compose button change colors on mouse over and mouse out
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		$("#compose").mouseover(function () {
+			$(this).attr('src', 'images/compose_down.png');
+		});
+		$("#compose").mouseout(function () {
+			$(this).attr('src', 'images/compose.png');
+		});
+		
+		
+		
 		
 		var test = function() {
 			//	This code makes an AJAX request.
@@ -224,52 +372,6 @@
 		var test3 = function () {
 			localStorage.clear();
 			alert("local storage is cleared");
-		};
-		
-		$(".tab").mouseover(function () {
-			$(this).css("background", "#00A9A7");
-		});
-		$(".tab").mouseout(function () {
-			$(this).css("background", "#7F8C8D");
-		});
-		
-		$("#compose").mouseover(function () {
-			$(this).attr('src', 'images/compose_down.png');
-		});
-		$("#compose").mouseout(function () {
-			$(this).attr('src', 'images/compose.png');
-		});
-		
-		var charge = function (id_param) {
-			//	First get id of charged content
-			var id_temp = id_param.split("_");
-			var id_temp = id_temp[1];
-			
-			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.onreadystatechange = function () {
-				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-					var temp = xmlhttp.responseText;
-					//var json = JSON.parse(temp);	//maybe use this in the future to do more accurate error statements
-					//if (json["errno"] == "1062")
-							//document.getElementById("testcontent").innerHTML = "Username already taken";
-					document.getElementById("error_input").innerHTML += temp;
-				}
-			}
-			xmlhttp.open("POST", serveraddress+"/charge", true);
-			var tempPost = "id=";
-			tempPost += id_temp;
-			xmlhttp.send(tempPost);
-			
-			//	Reload feed
-			load();
-		};
-		
-		var goToIdea = function (id_param) {
-			var id_temp = id_param.split("_");
-			var id_temp = id_temp[1];
-			
-			localStorage.id = id_temp;
-			window.location = rootaddress+"/idea.html";
 		};
 		
 		
