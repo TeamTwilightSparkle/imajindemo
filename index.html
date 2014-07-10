@@ -70,6 +70,7 @@
 			<button onclick="test3()">Clear Local Storage</button>
 		</div>
 	</div>
+	<div id="testtest"></div>
 	
 	<div id="popup_bg"></div>
 	<div id="ideaform">
@@ -111,10 +112,8 @@
 					temp += '}';
 					var json = JSON.parse(temp);
 					var tempstr = "";
-					var ideas = new Array();
-					var ideasCount = 0;
 					for (var i = 0; i < json.results.length; i++) {
-						tempstr += '	<div class="testtest" style="width:100%; height:120px;">';
+						tempstr += '	<div id="idearow" style="width:100%; height:120px;">';
 						tempstr += '		<div style="width:50px; float:left; margin-top:15px; margin-left:15px;">';
 						tempstr += '			<img src="images/icon.png"></img>';
 						tempstr += '		</div>';
@@ -124,11 +123,11 @@
 						tempstr += '			<div style="width:426px; height:40px; overflow:hidden;">'+json.results[i].description+'</div>';
 						tempstr += '			<img src="images/comments.png"></img>';
 						tempstr += '			<img src="images/flags.png"></img>';
-						tempstr += '			<img id="charges" class="charge_button" src="images/charges.png"></img>';
+						tempstr += '			<img id="charges_'+json.results[i].id+'" class="charge_button" src="images/charges.png" onclick="charge(this.id)"></img>';
+						tempstr += '			<img id="idea_'+json.results[i].id+'" src="images/compose.png" width="15" height="15" onclick="goToIdea(this.id)"></img>';
 						tempstr += '		</div>';
 						tempstr += '	</div>';
 						tempstr += '	<div style="width:100%; height:1px; margin-left:1px; margin-top:-1px; background-color:#B4975A;"></div>';
-						ideasCount += 1;
 					}
 					document.getElementById("feed").innerHTML = tempstr;
 				}
@@ -138,6 +137,9 @@
 		};
 		load();
 		
+		$("#logo").click(function () {
+			window.location = rootaddress+"/index.html";
+		});
 		$("#compose").click(function() {
 			document.getElementById("popup_bg").style.display="inline";
 			document.getElementById("ideaform").style.display="inline";
@@ -235,16 +237,39 @@
 			$(this).attr('src', 'images/compose.png');
 		});
 		
-		$(".charge_button").click(function () {
-			var temp = $(this).attr('id');
-			alert(temp);
-		});
+		var charge = function (id_param) {
+			//	First get id of charged content
+			var id_temp = id_param.split("_");
+			var id_temp = id_temp[1];
+			
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function () {
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					var temp = xmlhttp.responseText;
+					//var json = JSON.parse(temp);	//maybe use this in the future to do more accurate error statements
+					//if (json["errno"] == "1062")
+							//document.getElementById("testcontent").innerHTML = "Username already taken";
+					document.getElementById("error_input").innerHTML += temp;
+				}
+			}
+			xmlhttp.open("POST", serveraddress+"/charge", true);
+			var tempPost = "id=";
+			tempPost += id_temp;
+			xmlhttp.send(tempPost);
+			
+			//	Reload feed
+			load();
+		};
+		
+		var goToIdea = function (id_param) {
+			var id_temp = id_param.split("_");
+			var id_temp = id_temp[1];
+			
+			localStorage.id = id_temp;
+			window.location = rootaddress+"/idea.html";
+		};
 		
 		
-		
-		
-		//	Load feed at page load
-		//load();
 		
 		
 		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*

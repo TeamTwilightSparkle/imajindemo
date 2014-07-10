@@ -1,6 +1,6 @@
 //	serversetup.js
 //	make sure this reflects values in serversetup.js
-var ipaddress = "localhost";
+var ipaddress = "192.168.1.9";
 var port = "1110";
 var rootaddress = 'http://'+ipaddress+'/imajindemo';
 var serveraddress = 'http://'+ipaddress+':'+port;
@@ -110,4 +110,52 @@ http.createServer(function (request, response) {
 			console.log(post);
         });
     }
+	else if (parameter[1] == "charge" && parameter.length == 2 && request.method == 'POST') {
+		console.log("charging");
+        var body = '';
+        request.on('data', function (data) {
+            body += data;
+
+            if (body.length > 1e6)
+                req.connection.destroy();
+        });
+        request.on('end', function () {
+            var post = qs.parse(body);
+			var theQuery = "UPDATE content SET charges = charges + 1 WHERE id='"+post['id']+"'";		
+			connection.query(theQuery, function (error, rows, fields) {
+				console.log(error);
+				response.writeHead(200, {
+					'Access-Control-Allow-Origin': '*',
+					'Content-Type': 'text/plain'
+				});
+				response.write(JSON.stringify(error));
+				response.end();
+			});
+			console.log("Post: " + post);
+        });
+    }
+	else if (parameter[1] == "idea" && parameter.length == 2 && request.method == 'POST') {
+		console.log("getting idea");
+        var body = '';
+        request.on('data', function (data) {
+            body += data;
+
+            if (body.length > 1e6)
+                req.connection.destroy();
+        });
+        request.on('end', function () {
+            var post = qs.parse(body);
+			var theQuery = "SELECT * FROM content WHERE id='"+post['id']+"'";	
+			connection.query(theQuery, function (error, rows, fields) {
+				console.log(error);
+				response.writeHead(200, {
+					'Access-Control-Allow-Origin': '*',
+					'Content-Type': 'text/plain'
+				});
+				response.write(JSON.stringify(rows));
+				response.end();
+			});
+			console.log("Post: " + post);
+        });
+	}
 }).listen(port, ipaddress);

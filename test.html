@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="libs/jquery.js"></script>
+	<script src="libs/jquery_ui_min.js"></script>
+	<title>testing</title>
+</head>
+<body>
+	<div id="content"></div><div id="clickbutton">Click Me!</div>
+	<div id="testmessage"></div>
+
+	<script>
+		var generateButton = function() {
+			var temp = '	<div id="clickbutton">Click Me!</div>';
+			document.getElementById("content").innerHTML = temp;
+		};
+		generateButton();
+		
+		var clickedButton = function() {
+			document.getElementById("testmessage").innerHTML = "success!";
+		};
+		
+		$("#clickbutton").click(function () {
+			document.getElementById("testmessage").innerHTML = "success!";
+		});
+	</script>
+</body>
+</html>

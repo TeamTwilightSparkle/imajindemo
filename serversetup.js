@@ -1,4 +1,4 @@
-var ipaddress = "localhost";
+var ipaddress = "192.168.1.9";
 var port = "1110";
 var rootaddress = 'http://'+ipaddress+'/imajindemo';
 var serveraddress = 'http://'+ipaddress+':'+port;
