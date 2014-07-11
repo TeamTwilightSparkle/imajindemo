@@ -29,6 +29,8 @@
 			<div id="goldline"></div>
 			<div id="toptab" class="tab">Top</div>
 			<div id="goldline"></div>
+			<div id="greenlighttab" class="tab">Greenlight</div>
+			<div id="goldline"></div>
 			<div id="gsstab" class="tab">GSS</div>
 			<div id="goldline"></div>
 			<div id="hctab" class="tab">HC</div>
@@ -139,6 +141,13 @@
 						tempstr += '			<img id="charges_'+json.results[i].id+'" class="charge_button" src="images/charges.png" onclick="charge(this.id)" style="float:left;"></img>';
 						tempstr += '			<div id="charges_count" style="color:red; float:left; padding-right:5px;">'+json.results[i].charges+'</div>';
 						tempstr += '			<img id="idea_'+json.results[i].id+'" src="images/compose.png" width="15" height="15" onclick="goToIdea(this.id)" style="float:left;"></img>';
+						if	(json.results[i].greenlight > 0) {
+							//	This if statement is poorly written, but will do for now.
+							tempstr += '			<img id="greenlight_'+json.results[i].id+'" onclick="greenlight(this.id)" src="images/greenlight.png" width="15" height="15" style="float:left;"></img>';
+						}
+						else {
+							tempstr += '			<img id="greenlight_'+json.results[i].id+'" onclick="greenlight(this.id)" src="images/greenlight_down.png" width="15" height="15" style="float:left;"></img>';
+						}
 						tempstr += '		</div>';
 						tempstr += '	</div>';
 						tempstr += '	<div style="width:100%; height:1px; margin-left:1px; margin-top:-1px; background-color:#B4975A;"></div>';
@@ -224,6 +233,35 @@
 		};
 		
 		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		//	Greenlight an idea. Must be logged in as "Admin"
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
+		var greenlight = function (id_param) {
+			if (localStorage.username == "Admin") {
+				//	First get id of greenlit content
+				var id_temp = id_param.split("_");
+				var id_temp = id_temp[1];
+				
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function () {
+					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+						var temp = xmlhttp.responseText;
+						//var json = JSON.parse(temp);	//maybe use this in the future to do more accurate error statements
+						//if (json["errno"] == "1062")
+								//document.getElementById("testcontent").innerHTML = "Username already taken";
+						document.getElementById("error_input").innerHTML += temp;
+					}
+				}
+				xmlhttp.open("POST", serveraddress+"/greenlight", true);
+				var tempPost = "id=";
+				tempPost += id_temp;
+				xmlhttp.send(tempPost);
+				
+				//	Reload feed
+				load(localStorage.feed);
+			}
+		};
+		
+		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
 		//	Click on an idea to see more details, comments, tags, etc. Brings user to a new page
 		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*
 		var goToIdea = function (id_param) {
@@ -276,6 +314,7 @@
 			$("#hctab").css("color", "#FFFFFF");
 			$("#inteltab").css("color", "#FFFFFF");
 			$("#jhtab").css("color", "#FFFFFF");
+			$("#greenlighttab").css("color", "#FFFFFF");
 		});
 		$("#toptab").click(function () {
 			localStorage.feed = "topfeed";
@@ -286,6 +325,7 @@
 			$("#hctab").css("color", "#FFFFFF");
 			$("#inteltab").css("color", "#FFFFFF");
 			$("#jhtab").css("color", "#FFFFFF");
+			$("#greenlighttab").css("color", "#FFFFFF");
 		});
 		$("#gsstab").click(function () {
 			localStorage.feed = "gssfeed";
@@ -296,6 +336,7 @@
 			$("#hctab").css("color", "#FFFFFF");
 			$("#inteltab").css("color", "#FFFFFF");
 			$("#jhtab").css("color", "#FFFFFF");
+			$("#greenlighttab").css("color", "#FFFFFF");
 		});
 		$("#hctab").click(function () {
 			localStorage.feed = "hcfeed";
@@ -306,6 +347,7 @@
 			$("#hctab").css("color", "#00FFFA");
 			$("#inteltab").css("color", "#FFFFFF");
 			$("#jhtab").css("color", "#FFFFFF");
+			$("#greenlighttab").css("color", "#FFFFFF");
 		});
 		$("#inteltab").click(function () {
 			localStorage.feed = "intelfeed";
@@ -316,6 +358,7 @@
 			$("#hctab").css("color", "#FFFFFF");
 			$("#inteltab").css("color", "#00FFFA");
 			$("#jhtab").css("color", "#FFFFFF");
+			$("#greenlighttab").css("color", "#FFFFFF");
 		});
 		$("#jhtab").click(function () {
 			localStorage.feed = "jhfeed";
@@ -326,6 +369,18 @@
 			$("#hctab").css("color", "#FFFFFF");
 			$("#inteltab").css("color", "#FFFFFF");
 			$("#jhtab").css("color", "#00FFFA");
+			$("#greenlighttab").css("color", "#FFFFFF");
+		});
+		$("#greenlighttab").click(function () {
+			localStorage.feed = "greenlightfeed";
+			load(localStorage.feed);
+			$("#newtab").css("color", "#FFFFFF");
+			$("#toptab").css("color", "#FFFFFF");
+			$("#gsstab").css("color", "#FFFFFF");
+			$("#hctab").css("color", "#FFFFFF");
+			$("#inteltab").css("color", "#FFFFFF");
+			$("#jhtab").css("color", "#FFFFFF");
+			$("#greenlighttab").css("color", "#00FF00");
 		});
 		
 		//	~~~~~~~*~~~~~~~*~~~~~~~*~~~~~~~*

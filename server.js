@@ -1,7 +1,8 @@
 //	serversetup.js
 //	make sure this reflects values in serversetup.js
+//var ipaddress = "localhost";	//	Note: if you use this, it won't work on your phone
 //var ipaddress = "192.168.1.9";
-var ipaddress = "10.1.98.116";
+var ipaddress = "10.1.98.114";
 var port = "1110";
 var rootaddress = 'http://'+ipaddress+'/imajindemo';
 var serveraddress = 'http://'+ipaddress+':'+port;
@@ -118,6 +119,17 @@ http.createServer(function (request, response) {
 			response.end();
 		});	
 	}
+	else if (parameter[1] == "greenlightfeed" && parameter.length == 2 && request.method == 'POST') {
+		var theQuery = "SELECT * FROM content WHERE greenlight=1 ORDER BY charges DESC";
+		connection.query(theQuery, function (error, rows, fields) {
+			response.writeHead(200, {
+				'Access-Control-Allow-Origin': '*',
+				'Content-Type': 'text/plain'
+			});
+			response.write(JSON.stringify(rows));
+			response.end();
+		});	
+	}
 	else if (parameter[1] == "login" && parameter.length == 2 && request.method == 'POST') {
 		console.log("logging in");
         var body = '';
@@ -177,6 +189,30 @@ http.createServer(function (request, response) {
         request.on('end', function () {
             var post = qs.parse(body);
 			var theQuery = "UPDATE content SET charges = charges + 1 WHERE id='"+post['id']+"'";		
+			connection.query(theQuery, function (error, rows, fields) {
+				console.log(error);
+				response.writeHead(200, {
+					'Access-Control-Allow-Origin': '*',
+					'Content-Type': 'text/plain'
+				});
+				response.write(JSON.stringify(error));
+				response.end();
+			});
+			console.log("Post: " + post);
+        });
+    }
+	else if (parameter[1] == "greenlight" && parameter.length == 2 && request.method == 'POST') {
+		console.log("greenlighting");
+        var body = '';
+        request.on('data', function (data) {
+            body += data;
+
+            if (body.length > 1e6)
+                req.connection.destroy();
+        });
+        request.on('end', function () {
+            var post = qs.parse(body);
+			var theQuery = "UPDATE content SET greenlight = 1 WHERE id='"+post['id']+"'";		
 			connection.query(theQuery, function (error, rows, fields) {
 				console.log(error);
 				response.writeHead(200, {

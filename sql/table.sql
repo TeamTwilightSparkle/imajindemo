@@ -15,6 +15,7 @@ create table if not exists content (
     sector        varchar(64) not null,
     image         varchar(255),
     charges       int default 0 check (charges >= 0),
+    greenlight    int default 0 check (charges >= 0),
     last_modified date         not null,
     date_created  date         not null
 );
